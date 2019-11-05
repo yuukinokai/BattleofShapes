@@ -29,6 +29,10 @@ public class Player : MonoBehaviour
         return timeTagged;
     }
 
+    public void SetInitialColour(Color color){
+        initialColour = color;
+    }
+
     void Awake()
     {
         GameObject.DontDestroyOnLoad(this);
@@ -76,11 +80,6 @@ public class Player : MonoBehaviour
                 //CmdLostGame(true);
             }
         }
-
-        // if (this.isTag)
-        // {
-        //     this.transform.Find("Mark").gameObject.SetActive(true);
-        // }
         if (!this.canBeTagged)
         {
             this.GetComponent<SpriteRenderer>().color = Color.yellow;

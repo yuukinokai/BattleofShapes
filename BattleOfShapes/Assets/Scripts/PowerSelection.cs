@@ -7,9 +7,11 @@ public class PowerSelection : MonoBehaviour
 {
     private int currSelection = 0;
 
-    private Color[] colours = {Color.red, Color.green, Color.white, Color.yellow};
-
     private GameObject player;
+
+    public Color[] colours = {Color.red, Color.green, Color.white, Color.yellow};
+
+    public GameObject[] possibleBullets;
     
     // Start is called before the first frame update
     void Start()
@@ -42,16 +44,20 @@ public class PowerSelection : MonoBehaviour
     void ChangeLeft(){
         currSelection++;
         currSelection = currSelection % colours.Length;
-        this.GetComponent<Image>().color = colours[currSelection];
-        player.GetComponent<Battle>().SetBullet(currSelection);
+        UpdateElements();
     }
     void ChangeRight(){
         currSelection--;
         if(currSelection < 0){
             currSelection += colours.Length;
         }
+        UpdateElements();
+    }
+
+    void UpdateElements(){
         this.GetComponent<Image>().color = colours[currSelection];
-        player.GetComponent<Battle>().SetBullet(currSelection);
+        player.GetComponent<Battle>().SetBullet(possibleBullets[currSelection]);
+        player.GetComponent<Player>().SetInitialColour(colours[currSelection]);
     }
 
     public int GetSelection(){
