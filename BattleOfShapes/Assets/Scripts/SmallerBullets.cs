@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SmallerBullets : Bullet
 {
-     protected bool ShouldDestroy(string ctag){
+    override protected bool ShouldDestroy(string ctag){
         if (ctag == "Side" || ctag == "Bullet") return true;
         return false;
     }

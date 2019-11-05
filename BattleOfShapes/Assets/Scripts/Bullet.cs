@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    protected bool ShouldDestroy(string ctag){
+    virtual protected bool ShouldDestroy(string ctag){
         if (ctag == "Wall" || ctag == "Side" || ctag == "Bullet") return true;
         return false;
     }
