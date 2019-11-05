@@ -11,10 +11,15 @@ public class Battle : MonoBehaviour
     private GameObject shield;
 
     public GameObject bulletPrefab;
+    public GameObject[] possibleBullets;
 
     private Movement movement;
 
     public AudioSource fireSound;
+    
+    public void SetBullet(int i){
+        bulletPrefab = possibleBullets[i];
+    }
 
     void Awake()
     {

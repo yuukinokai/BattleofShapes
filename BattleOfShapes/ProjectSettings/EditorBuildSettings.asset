@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BarronLand.unity
     guid: f58e81333c837be468b30248145fe92f
+  - enabled: 1
+    path: Assets/Scenes/BulletSelect.unity
+    guid: 8ea77a72164d805478da146214e2c8d0
   m_configObjects: {}

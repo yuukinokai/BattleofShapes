@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 991621341}
   - component: {fileID: 991621340}
   m_Layer: 5
-  m_Name: Maze (1)
+  m_Name: Barronland
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
