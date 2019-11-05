@@ -1843,7 +1843,7 @@ PrefabInstance:
         type: 3}
       propertyPath: bulletPrefab
       value: 
-      objectReference: {fileID: 7658281218413932394, guid: 48aba156d24cf414a835b8cde4631b85,
+      objectReference: {fileID: 1494062543193751921, guid: fda6bd379a607534cb78b51358331da5,
         type: 3}
     - target: {fileID: 4945962330549835842, guid: bec922b29adf870429be9d0d9baa6897,
         type: 3}
@@ -2279,8 +2279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
+  m_HorizontalAxis: Horizontal1
+  m_VerticalAxis: Vertical1
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10

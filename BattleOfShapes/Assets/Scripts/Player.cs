@@ -77,18 +77,17 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (this.isTag)
-        {
-            this.transform.Find("Mark").gameObject.SetActive(true);
-        }
-        else
-        {
-
-        }
+        // if (this.isTag)
+        // {
+        //     this.transform.Find("Mark").gameObject.SetActive(true);
+        // }
         if (!this.canBeTagged)
         {
-            this.transform.Find("Mark").gameObject.SetActive(false);
             this.GetComponent<SpriteRenderer>().color = Color.yellow;
+            if (lastTagged + 3 < Time.timeSinceLevelLoad)
+            {
+                canBeTagged = true;
+            }
         }
         else
         {
@@ -99,18 +98,9 @@ public class Player : MonoBehaviour
             else
             {
                 this.transform.Find("Slow").gameObject.SetActive(false);
-                this.GetComponent<SpriteRenderer>().color = initialColour;
             }
+            this.GetComponent<SpriteRenderer>().color = initialColour;
         }
-
-        if (!this.canBeTagged)
-        {
-            if (lastTagged + 3 < Time.timeSinceLevelLoad)
-            {
-                canBeTagged = true;
-            }
-        }
-
     }
 
     public void SetTag(bool tag)
@@ -118,11 +108,13 @@ public class Player : MonoBehaviour
         this.isTag = tag;
         if (tag)
         {
+            this.transform.Find("Mark").gameObject.SetActive(true);
             movement.ChangeMaxCharge(200f);
             tagSound.Play();
         }
         else
         {
+            this.transform.Find("Mark").gameObject.SetActive(false);
             movement.ChangeMaxCharge(100f);
         }
         movement.ResetCharge();

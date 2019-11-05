@@ -6,17 +6,17 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 1f;
     public bool isSet = false;
-    Player player;
+    protected Player player;
 
     public Rigidbody2D rb;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         //this.gameObject.SetActive(false);
         rb.velocity = transform.right * speed;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
@@ -34,10 +34,15 @@ public class Bullet : MonoBehaviour
                 Destroy(this.gameObject);
             }
         } 
-        else if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Side")
+        else if (ShouldDestroy(collision.gameObject.tag))
         {
             Destroy(this.gameObject);
         }
+    }
+
+    protected bool ShouldDestroy(string ctag){
+        if (ctag == "Wall" || ctag == "Side" || ctag == "Bullet") return true;
+        return false;
     }
 
     // Update is called once per frame
