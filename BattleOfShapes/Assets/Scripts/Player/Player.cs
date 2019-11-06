@@ -19,6 +19,15 @@ public class Player : MonoBehaviour
 
     private Movement movement;
 
+    private bool isOnBridge = false;
+
+    public bool IsOnBridge(){
+        return isOnBridge;
+    }
+    public void SetBridge(bool b){
+        isOnBridge = b;
+    }
+
     public string GetName()
     {
         return playerName;
@@ -35,7 +44,6 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        GameObject.DontDestroyOnLoad(this);
         //this.gameObject.transform.GetChild(0).GetComponent<TextMesh>().text = playerName + name;
         initialColour = this.GetComponent<SpriteRenderer>().color;
         movement = this.gameObject.GetComponent<Movement>();

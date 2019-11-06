@@ -6,18 +6,23 @@ using UnityEngine.UI;
 public class Movement : MonoBehaviour
 {
 
-    public bool controllers = true;
-    [Range(0, 2f)] [SerializeField] private float speed = 0.3f;
+    [SerializeField] private float runSpeed = 0.7f;
+    [SerializeField] private float normalSpeed = 0.3f;
+    [SerializeField] private float slowTime = 2.0f;
+
+    [SerializeField] private float runCharge = 0f;
+    [SerializeField] private float maxCharge = 100f;
+    [SerializeField] private float chargeRate = 0.5f;
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
+    [SerializeField] private bool controllers = true;
 
     private Rigidbody2D rb;
     private GameObject sliderObject;
     private Slider slider;
     private Vector3 _Velocity = Vector3.zero;
 
-    [SerializeField] private float runCharge = 0f;
-    [SerializeField] private float maxCharge = 100f;
-    [SerializeField] private float chargeRate = 0.5f;
+    [SerializeField] private float runMultiplier = 1.0f;
+    [SerializeField] private float speed = 0.3f;
 
     private bool charging = true;
     private bool running = false;
@@ -35,7 +40,6 @@ public class Movement : MonoBehaviour
     {
         isControlled = control;
     }
-
 
     // Use this for initialization
     void Awake()
@@ -64,7 +68,18 @@ public class Movement : MonoBehaviour
     {
         if (battle.IsShielding()) return;
         isShot = s;
-        this.timeShot = Time.timeSinceLevelLoad;
+        if (isShot)
+        {
+            runMultiplier = runMultiplier / 2;
+            this.timeShot = Time.timeSinceLevelLoad;
+        }
+        else{
+            runMultiplier = runMultiplier * 2;
+        }
+    }
+
+    public void ChangeMultiplier(float m){
+        runMultiplier += m;
     }
 
     bool CanRun()
@@ -77,9 +92,9 @@ public class Movement : MonoBehaviour
     {
         if (SceneController.GetController() == null || !SceneController.GetController().ActiveGame()) return;
         if (!isControlled) return;
-        if (timeShot + 2 < Time.timeSinceLevelLoad)
+        if (isShot && timeShot + slowTime < Time.timeSinceLevelLoad)
         {
-            isShot = false;
+            SetShot(false);
         }
         float horizontal = Input.GetAxis("Horizontal" + name);
         float vertical = Input.GetAxis("Vertical" + name);
@@ -93,40 +108,22 @@ public class Movement : MonoBehaviour
         // }
 
 
-        if(runInput > 0)
+        if(runInput > 0 && CanRun())
         {
-            if(CanRun())
+            running = true;
+            runCharge--;
+            runCharge = Mathf.Max(0, runCharge);
+            slider.GetComponent<Image>().color = Color.yellow;
+            speed = runSpeed * runMultiplier;
+            if (runCharge <= 0)
             {
-                running = true;
-                runCharge--;
-                runCharge = Mathf.Max(0, runCharge);
-                slider.GetComponent<Image>().color = Color.yellow;
-                if (runCharge <= 0)
-                {
-                    charging = true;
-                }
-            }
-            else
-            {
-                running = false;
+                charging = true;
             }
         }
         else
         {
             running = false;
-        }
-
-        if (running)
-        {
-            speed = 0.7f;
-        }
-        else
-        {
-            speed = 0.3f;
-        }
-
-        if (!running)
-        {
+            speed = normalSpeed * runMultiplier;
             runCharge += chargeRate;
             runCharge = Mathf.Min(maxCharge, runCharge);
             if (runCharge >= maxCharge)
@@ -145,11 +142,6 @@ public class Movement : MonoBehaviour
         }
 
         slider.value = ((float) runCharge / maxCharge);
-
-        if (isShot)
-        {
-            speed /= 2;
-        }
 
         //rb.AddForce(new Vector2(horizontal * speed, vertical * speed));
         Vector3 targetVelocity = new Vector2(horizontal * 10f *  speed, vertical * 10f * speed);
@@ -177,6 +169,10 @@ public class Movement : MonoBehaviour
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref _Velocity, movementSmoothing);
         }
         
+    }
+
+    public bool GetRun(){
+        return running;
     }
 
     public void ChangeMaxCharge(float charge)

@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class MovingWall : MonoBehaviour
 {
-    public float maxX;
-    public float minX;
-    public float maxY;
-    public float minY;
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
 
     private Rigidbody2D rb;

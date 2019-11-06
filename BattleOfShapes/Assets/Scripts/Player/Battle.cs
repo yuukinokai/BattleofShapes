@@ -35,6 +35,7 @@ public class Battle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!SceneController.GetController().ActiveGame()) return;
         bool fire = Input.GetButtonDown("Fire" + name);
         float blockInput = Input.GetAxis("Block" + name);
         // if (movement.controllers)

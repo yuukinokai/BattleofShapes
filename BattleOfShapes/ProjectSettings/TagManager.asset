@@ -45,8 +45,17 @@ TagManager:
   - name: BG
     uniqueID: 2910292329
     locked: 0
+  - name: BGElement
+    uniqueID: 3100998227
+    locked: 0
   - name: Behind
     uniqueID: 1603387151
+    locked: 0
+  - name: Bridge
+    uniqueID: 641852015
+    locked: 0
+  - name: Bullet
+    uniqueID: 2387599397
     locked: 0
   - name: Player
     uniqueID: 2681237525
@@ -57,9 +66,12 @@ TagManager:
   - name: Status
     uniqueID: 3914856767
     locked: 0
-  - name: Wall
+  - name: Side
     uniqueID: 3595360651
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shield
+    uniqueID: 1563451395
     locked: 0

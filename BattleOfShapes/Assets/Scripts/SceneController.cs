@@ -27,6 +27,17 @@ public class SceneController : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
     }
 
+    public void EndGame(){
+        timeDisplayObject.GetComponent<Text>().text = "END";
+        start = false;
+    }
+
+    public void FailedLevel(){
+        timeDisplayObject.GetComponent<Text>().text = "END";
+        DisplayEndScreen();
+        start = false;
+    }
+
     public bool ActiveGame()
     {
         return start;
@@ -107,6 +118,14 @@ public class SceneController : MonoBehaviour
             Destroy(p);
         }
         SceneManager.LoadScene("Start");
+    }
+
+    public void LoadScene(string s){
+        foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            Destroy(p);
+        }
+        SceneManager.LoadScene(s);
     }
 
     public void QuitGame()
