@@ -72,6 +72,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Shield
+  - name: Top
     uniqueID: 1563451395
+    locked: 0
+  - name: New Layer
+    uniqueID: 1405813891
     locked: 0

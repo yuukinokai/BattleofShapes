@@ -14,8 +14,9 @@ public class PowerSelection : MonoBehaviour
     public GameObject[] possibleBullets;
 
     public bool buttonDown = false;
+
+    public bool ready = false;
     
-    // Start is called before the first frame update
     void Start()
     {
         foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player")){
@@ -30,8 +31,13 @@ public class PowerSelection : MonoBehaviour
 
     void Update()
     {
-        if(!buttonDown){
-            float horizontal = Input.GetAxis("Horizontal" + name);
+        if(ready) return;
+        float horizontal = Input.GetAxis("Horizontal" + name);
+
+        if(horizontal == 0){
+            buttonDown = false;
+        }
+        else if(!buttonDown){   
             if(horizontal > 0){
                 ChangeLeft();
                 buttonDown = true;
@@ -41,8 +47,9 @@ public class PowerSelection : MonoBehaviour
                 buttonDown = true;
             }
         }
-        else if (Input.GetAxis("Horizontal" + name) == 0){
-            buttonDown = false;
+        if(Input.GetButtonDown("Fire" + name)){
+            this.gameObject.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            ready = true;
         }
     }
 
