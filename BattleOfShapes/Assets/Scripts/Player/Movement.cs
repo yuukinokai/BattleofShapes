@@ -14,11 +14,10 @@ public class Movement : MonoBehaviour
     [SerializeField] private float maxCharge = 100f;
     [SerializeField] private float chargeRate = 0.5f;
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
-    [SerializeField] private bool controllers = true;
 
     private Rigidbody2D rb;
     private GameObject sliderObject;
-    private Slider slider;
+    [SerializeField] private Slider slider;
     private Vector3 _Velocity = Vector3.zero;
 
     [SerializeField] private float runMultiplier = 1.0f;
@@ -45,17 +44,15 @@ public class Movement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        //slider = sliders.GetComponentInChildren<Slider>();
-        //sliderObject.SetActive(true);
-  
         battle = GetComponent<Battle>();
     }
 
     void Start()
     {
         sliderObject = GameObject.Find("Slider" + name);
-        sliderObject.SetActive(true);
-        slider = sliderObject.GetComponent<Slider>();
+        if(sliderObject != null){
+            slider = sliderObject.GetComponent<Slider>();
+        }
         playerNumber = int.Parse(name);
     }
 
@@ -87,8 +84,7 @@ public class Movement : MonoBehaviour
         return (!charging && !battle.IsShielding() && !battle.IsShooting());
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (SceneController.GetController() == null || !SceneController.GetController().ActiveGame()) return;
         if (!isControlled) return;
@@ -99,14 +95,10 @@ public class Movement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal" + name);
         float vertical = Input.GetAxis("Vertical" + name);
         float runInput = Input.GetAxis("Run" + name);
-
-        // if (controllers)
-        // {
-        //     horizontal += Input.GetAxis("Horizontal" + (playerNumber+4).ToString());
-        //     vertical += Input.GetAxis("Vertical" + (playerNumber + 4).ToString());
-        //     runInput += Input.GetAxis("Run" + (playerNumber + 4).ToString());
-        // }
-
+        
+        if(!slider.gameObject.active){
+            slider.gameObject.SetActive(true);
+        }
 
         if(runInput > 0 && CanRun())
         {

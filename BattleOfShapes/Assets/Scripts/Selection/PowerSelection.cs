@@ -12,6 +12,8 @@ public class PowerSelection : MonoBehaviour
     public Color[] colours = {Color.red, Color.green, Color.white, Color.yellow};
 
     public GameObject[] possibleBullets;
+
+    public bool buttonDown = false;
     
     // Start is called before the first frame update
     void Start()
@@ -26,19 +28,22 @@ public class PowerSelection : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.anyKeyDown)
-     {
-         float horizontal = Input.GetAxisRaw("Horizontal" + name);
-        if(horizontal > 0){
-            ChangeLeft();
+        if(!buttonDown){
+            float horizontal = Input.GetAxis("Horizontal" + name);
+            if(horizontal > 0){
+                ChangeLeft();
+                buttonDown = true;
+            }
+            else if(horizontal < 0){
+                ChangeRight();
+                buttonDown = true;
+            }
         }
-        if(horizontal < 0){
-            ChangeRight();
+        else if (Input.GetAxis("Horizontal" + name) == 0){
+            buttonDown = false;
         }
-     }  
     }
 
     void ChangeLeft(){

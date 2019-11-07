@@ -29,9 +29,11 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                Movement playerMovement = collision.gameObject.GetComponent<Movement>();
-                playerMovement.SetShot(true);
-                Destroy(this.gameObject);
+                if(player != collision.gameObject.GetComponent<Player>()){
+                    Movement playerMovement = collision.gameObject.GetComponent<Movement>();
+                    playerMovement.SetShot(true);
+                    Destroy(this.gameObject);
+                }
             }
         } 
         else if (ShouldDestroy(collision.gameObject.tag))

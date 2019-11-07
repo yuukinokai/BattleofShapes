@@ -5,16 +5,14 @@ using UnityEngine;
 public class Ice : MonoBehaviour
 {
 
-    [SerializeField] private float change = 10f;
+    [SerializeField] private float change = 2.0f;
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
+            collision.gameObject.GetComponent<Player>().SetIce(true);
             Vector3 iceVector = collision.gameObject.transform.right * change;
-            //collision.gameObject.GetComponent<Movement>().SetControl(false);
-            //collision.gameObject.GetComponent<Rigidbody2D>().velocity = iceVector;
-            //Debug.Log((iceVector).ToString());
             collision.gameObject.GetComponent<Movement>().ChangeMultiplier(change);
         }
 
@@ -24,8 +22,11 @@ public class Ice : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //collision.gameObject.GetComponent<Movement>().SetControl(true);
-            collision.gameObject.GetComponent<Movement>().ChangeMultiplier(-change);
+            if(collision.gameObject.GetComponent<Player>().IsOnIce()){
+                collision.gameObject.GetComponent<Player>().SetIce(false);
+                collision.gameObject.GetComponent<Movement>().ChangeMultiplier(-change);
+            }
+            
         }
     }
 }

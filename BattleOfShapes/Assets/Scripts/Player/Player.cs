@@ -20,12 +20,19 @@ public class Player : MonoBehaviour
     private Movement movement;
 
     private bool isOnBridge = false;
+    private bool isOnIce = false;
 
     public bool IsOnBridge(){
         return isOnBridge;
     }
+    public bool IsOnIce(){
+        return isOnIce;
+    }
     public void SetBridge(bool b){
         isOnBridge = b;
+    }
+    public void SetIce(bool i){
+        isOnIce = i;
     }
 
     public string GetName()
