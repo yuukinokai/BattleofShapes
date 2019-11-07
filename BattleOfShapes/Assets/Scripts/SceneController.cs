@@ -9,6 +9,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] private float gameTime = -1.0f;
     [SerializeField] private GameObject timeDisplayObject;
     [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameObject winScreen;
+   
 
     private GameObject[] players;
 
@@ -22,9 +24,12 @@ public class SceneController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        instance = this; 
         endScreen.SetActive(false);
         players = GameObject.FindGameObjectsWithTag("Player");
+        if(winScreen != null){
+            winScreen.SetActive(false);
+        }
     }
 
     public void EndGame(){
@@ -34,7 +39,18 @@ public class SceneController : MonoBehaviour
 
     public void FailedLevel(){
         timeDisplayObject.GetComponent<Text>().text = "END";
-        DisplayEndScreen();
+        DisplayScreen(endScreen);
+        start = false;
+    }
+
+    public void WinLevel(){
+        timeDisplayObject.GetComponent<Text>().text = "COMPLETED";
+        if(winScreen != null){
+            DisplayScreen(winScreen);
+        }
+        else{
+            DisplayScreen(endScreen);
+        }
         start = false;
     }
 
@@ -72,9 +88,7 @@ public class SceneController : MonoBehaviour
         timeDisplayObject.GetComponent<Text>().text = minutes.ToString("0") + " : " + seconds.ToString("00");
         if (gameTime > matchTime)
         {
-            timeDisplayObject.GetComponent<Text>().text = "END";
-            DisplayEndScreen();
-            start = false;
+            FailedLevel();
         }
 
         if (Input.GetKey("escape"))
@@ -84,9 +98,9 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    public void DisplayEndScreen()
+    public void DisplayScreen(GameObject screen)
     {
-        endScreen.SetActive(true);
+        screen.SetActive(true);
         GameObject[] playerScore = players;
         for(int i = 0; i < players.Length; i++)
         {
@@ -102,12 +116,12 @@ public class SceneController : MonoBehaviour
 
             for (int i = 0; i < players.Length; i++)
         {
-            endScreen.transform.GetChild(2).GetChild(i).gameObject.SetActive(true);
-            endScreen.transform.GetChild(2).GetChild(i).gameObject.GetComponent<Text>().text = "Player " + playerScore[i].name + " Time : " + playerScore[i].GetComponent<Player>().GetTime().ToString("000");
+            screen.transform.GetChild(2).GetChild(i).gameObject.SetActive(true);
+            screen.transform.GetChild(2).GetChild(i).gameObject.GetComponent<Text>().text = "Player " + playerScore[i].name + " Time : " + playerScore[i].GetComponent<Player>().GetTime().ToString("000");
         }
         for(int i = players.Length; i < 4; i++)
         {
-            endScreen.transform.GetChild(2).GetChild(i).gameObject.SetActive(false);
+            screen.transform.GetChild(2).GetChild(i).gameObject.SetActive(false);
         }
     }
 

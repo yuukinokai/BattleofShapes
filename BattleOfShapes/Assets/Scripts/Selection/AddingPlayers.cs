@@ -46,7 +46,7 @@ public class AddingPlayers : MonoBehaviour
                         Destroy(p[i]);
                     }
                 }
-                sc.LoadScene("LevelSelect");
+                sc.LoadScene("MultiLevelSelect");
             }
         }
 
