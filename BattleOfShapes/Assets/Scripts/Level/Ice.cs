@@ -24,7 +24,7 @@ public class Ice : MonoBehaviour
         {
             if(collision.gameObject.GetComponent<Player>().IsOnIce()){
                 collision.gameObject.GetComponent<Player>().SetIce(false);
-                collision.gameObject.GetComponent<Movement>().ChangeMultiplier(-change);
+                collision.gameObject.GetComponent<Movement>().ResetMultiplier();
             }
             
         }

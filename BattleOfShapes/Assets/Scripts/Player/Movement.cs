@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float runSpeed = 0.7f;
     [SerializeField] private float normalSpeed = 0.3f;
+    [SerializeField] private float tagSpeed = 0.05f;
     [SerializeField] private float slowTime = 2.0f;
 
     [SerializeField] private float runCharge = 0f;
@@ -23,6 +24,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float runMultiplier = 1.0f;
     [SerializeField] private float speed = 0.3f;
 
+    private Animator animator;
+
     private bool charging = true;
     private bool running = false;
     public int playerNumber; 
@@ -31,7 +34,7 @@ public class Movement : MonoBehaviour
 
     private Battle battle;
 
-    private bool isShot = false;
+    [SerializeField] private bool isShot = false;
 
     private bool isControlled = true;
 
@@ -45,6 +48,7 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         battle = GetComponent<Battle>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -64,6 +68,7 @@ public class Movement : MonoBehaviour
     public void SetShot(bool s)
     {
         if (battle.IsShielding()) return;
+        if(isShot && s) return;
         isShot = s;
         if (isShot)
         {
@@ -71,12 +76,16 @@ public class Movement : MonoBehaviour
             this.timeShot = Time.timeSinceLevelLoad;
         }
         else{
-            runMultiplier = runMultiplier * 2;
+            ResetMultiplier();
         }
     }
 
     public void ChangeMultiplier(float m){
         runMultiplier += m;
+    }
+
+    public void ResetMultiplier(){
+        runMultiplier = 1.0f;
     }
 
     bool CanRun()
@@ -95,6 +104,7 @@ public class Movement : MonoBehaviour
         }
         float horizontal = Input.GetAxis("Horizontal" + name);
         float vertical = Input.GetAxis("Vertical" + name);
+        if(animator != null) animator.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontal), Mathf.Abs(vertical)));
         float runInput = Input.GetAxis("Run" + name);
         
         if(!slider.gameObject.active){
@@ -108,6 +118,9 @@ public class Movement : MonoBehaviour
             runCharge = Mathf.Max(0, runCharge);
             slider.GetComponent<Image>().color = Color.yellow;
             speed = runSpeed * runMultiplier;
+            if(GetComponent<Player>().IsTheTag()){
+                speed += tagSpeed;
+            }
             if (runCharge <= 0)
             {
                 charging = true;
@@ -117,6 +130,10 @@ public class Movement : MonoBehaviour
         {
             running = false;
             speed = normalSpeed * runMultiplier;
+            if(GetComponent<Player>().IsTheTag()){
+                speed += tagSpeed;
+                runCharge += chargeRate;
+            }
             runCharge += chargeRate;
             runCharge = Mathf.Min(maxCharge, runCharge);
             if (runCharge >= maxCharge)
@@ -155,12 +172,9 @@ public class Movement : MonoBehaviour
                     newZ -= 180;
                 }
             }
-            //Debug.Log("vertical : " + vertical +" |||Horizontal : " + horizontal + " ||| newZ : " + newZ);
             transform.eulerAngles = new Vector3(0f, 0f, newZ);
-
-            // And then smoothing it out and applying it to the character
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref _Velocity, movementSmoothing);
         }
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref _Velocity, movementSmoothing);
         
     }
 

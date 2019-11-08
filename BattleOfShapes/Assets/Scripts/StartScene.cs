@@ -23,4 +23,12 @@ public class StartScene : MonoBehaviour
     public void DeleteSaveFile(){
         SaveSystem.DeleteData();
     }
+
+    public void LoadSceneDeletePlayers(string s){
+        foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            Destroy(p);
+        }
+        SceneManager.LoadScene(s);
+    }
 }
