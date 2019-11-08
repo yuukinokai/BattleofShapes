@@ -19,4 +19,8 @@ public class StartScene : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void DeleteSaveFile(){
+        SaveSystem.DeleteData();
+    }
 }

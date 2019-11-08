@@ -10,8 +10,9 @@ public class SceneController : MonoBehaviour
     [SerializeField] private GameObject timeDisplayObject;
     [SerializeField] private GameObject endScreen;
     [SerializeField] private GameObject winScreen;
-   
+    [SerializeField] private int currLevel;
 
+    [SerializeField] private int levelUnlocked = 1;
     private GameObject[] players;
 
     public float matchTime = 180f;
@@ -24,6 +25,7 @@ public class SceneController : MonoBehaviour
 
     private void Awake()
     {
+        LoadGameData();
         instance = this; 
         endScreen.SetActive(false);
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -33,18 +35,17 @@ public class SceneController : MonoBehaviour
     }
 
     public void EndGame(){
-        timeDisplayObject.GetComponent<Text>().text = "END";
         start = false;
     }
 
     public void FailedLevel(){
-        timeDisplayObject.GetComponent<Text>().text = "END";
         DisplayScreen(endScreen);
         start = false;
     }
 
     public void WinLevel(){
-        timeDisplayObject.GetComponent<Text>().text = "COMPLETED";
+        UnlockNextLevel();
+        SaveGameData();
         if(winScreen != null){
             DisplayScreen(winScreen);
         }
@@ -100,6 +101,7 @@ public class SceneController : MonoBehaviour
 
     public void DisplayScreen(GameObject screen)
     {
+        timeDisplayObject.GetComponent<Text>().text = "END";
         screen.SetActive(true);
         GameObject[] playerScore = players;
         for(int i = 0; i < players.Length; i++)
@@ -116,12 +118,12 @@ public class SceneController : MonoBehaviour
 
             for (int i = 0; i < players.Length; i++)
         {
-            screen.transform.GetChild(2).GetChild(i).gameObject.SetActive(true);
-            screen.transform.GetChild(2).GetChild(i).gameObject.GetComponent<Text>().text = "Player " + playerScore[i].name + " Time : " + playerScore[i].GetComponent<Player>().GetTime().ToString("000");
+            screen.transform.GetChild(1).GetChild(i).gameObject.SetActive(true);
+            screen.transform.GetChild(1).GetChild(i).gameObject.GetComponent<Text>().text = "Player " + playerScore[i].name + " Time : " + playerScore[i].GetComponent<Player>().GetTime().ToString("000");
         }
         for(int i = players.Length; i < 4; i++)
         {
-            screen.transform.GetChild(2).GetChild(i).gameObject.SetActive(false);
+            screen.transform.GetChild(1).GetChild(i).gameObject.SetActive(false);
         }
     }
 
@@ -146,4 +148,21 @@ public class SceneController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void LoadGameData()
+    {
+        GameData data = SaveSystem.LoadGame();
+        if (data == null) return;
+        levelUnlocked = data.level;
+        
+    }
+
+    public void SaveGameData(){
+        SaveSystem.SaveGame(levelUnlocked);
+    }
+
+    public void UnlockNextLevel(){
+        levelUnlocked = currLevel+1;
+    }
+    
 }
