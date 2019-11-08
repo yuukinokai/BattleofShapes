@@ -88,6 +88,7 @@ public class Movement : MonoBehaviour
     {
         if (SceneController.GetController() == null || !SceneController.GetController().ActiveGame()) return;
         if (!isControlled) return;
+        if (battle.IsShielding()) return;
         if (isShot && timeShot + slowTime < Time.timeSinceLevelLoad)
         {
             SetShot(false);

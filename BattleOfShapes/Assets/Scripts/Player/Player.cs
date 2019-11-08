@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "PlayerSelect" || SceneManager.GetActiveScene().name == "LevelSelect" ||
             SceneManager.GetActiveScene().name == "BulletSelect") return;
-        if (!SceneController.GetController().ActiveGame()) return;
+        if (SceneController.GetController() == null || !SceneController.GetController().ActiveGame()) return;
         if (isTag)
         {
             timeTagged += Time.deltaTime;
